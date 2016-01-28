@@ -187,3 +187,6 @@ if not DEBUG:
         'ExpiresDefault': 'access plus 6 months',
         'Cache-Control': 'max-age=86400',
     }
+
+
+USER_IMAGE_PREFIX = "user_images/%m%d%H%M%S/"

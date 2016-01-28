@@ -1,9 +1,12 @@
+import os
 import re
 from itertools import chain
 import urllib
 
+from django.conf import settings
 from django.template import Template, Context
 from django.template.base import VariableNode
+from django.utils import timezone
 
 import pyratemp
 import six
@@ -194,3 +197,8 @@ def qr_code_from_url(relative_url, request=None, size=500):
     else:
         url = relative_url
     return QR_CODE_URL_TEMPLATE.format(size=size, data=urllib.quote_plus(url))
+
+
+def generate_user_image_filename(fh):
+    prefix = timezone.now().strftime(settings.USER_IMAGE_PREFIX)
+    return os.path.join(prefix, fh.name)

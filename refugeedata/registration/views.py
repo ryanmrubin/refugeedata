@@ -1,5 +1,4 @@
 import json
-import os
 
 from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse
@@ -9,7 +8,6 @@ from django.views.decorators.http import require_http_methods
 from django.views.generic import RedirectView
 
 from django.utils.http import urlencode
-from django.utils import timezone
 
 from refugeedata import models
 
@@ -29,8 +27,7 @@ def image_upload(request):
     if "file" not in request.FILES:
         return HttpResponseBadRequest("No file uploaded")
     fh = request.FILES["file"]
-    prefix = timezone.now().strftime(models.USER_IMAGE_PREFIX)
-    filename = os.path.join(prefix, fh.name)
+    filename = utils.generate_user_image_filename(fh)
     default_storage.save(filename, fh)
     return HttpResponse(json.dumps({"filename": filename}),
                         content_type="application/json")
