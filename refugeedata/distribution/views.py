@@ -1,7 +1,8 @@
 import datetime
 
-from django.http import HttpResponseNotAllowed
+from django.http import HttpResponseNotAllowed, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render, Http404
+from django.views.decorators.http import require_POST
 
 from refugeedata import models
 
@@ -52,6 +53,18 @@ def attendee(request, distribution, card_number, card_code):
         "is_invited": card in distribution.invitees.all(),
         "has_attended": card in distribution.attendees.all(),
     })
+
+
+@standard_distribution_access
+@require_POST
+def image_upload(request):
+    if "file" not in request.FILES:
+        return HttpResponseBadRequest("No file uploaded")
+    fh = request.FILES["file"]
+    filename = utils.generate_user_image_filename(fh)
+    default_storage.save(filename, fh)
+    return HttpResponse(json.dumps({"filename": filename}),
+                        content_type="application/json")
 
 
 # FIXME standard dist access or admin-only?

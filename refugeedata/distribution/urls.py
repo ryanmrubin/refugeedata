@@ -2,6 +2,7 @@ from django.conf.urls import url
 
 urlpatterns = [
     url(r'^$', 'refugeedata.distribution.views.home', name='home'),
+    url(r'^ajax_image_upload/$', 'refugeedata.distribution.views.image_upload', name='image_upload'),
     url(r'^(?P<distribution_id>\d+)/$', 'refugeedata.distribution.views.info', name='info'),
     url(r'^(?P<distribution_id>\d+)/attendee/(?P<card_number>\d+)/(?P<card_code>[a-fA-F0-9]{4})/$',
         'refugeedata.distribution.views.attendee', name='attendee'),
